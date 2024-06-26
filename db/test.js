@@ -29,4 +29,5 @@ db.permisos.insertMany([
   { name: "read", description: "Read permission" },
   { name: "write", description: "Write permission" },
   { name: "delete", description: "Delete permission" },
+  { name: "Update", description: "Update permission" },
 ]);
