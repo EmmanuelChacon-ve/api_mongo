@@ -1,5 +1,5 @@
 import User from "../models/User.js";
-import Role from "../models/role.js"; // Importa tu modelo de roles
+import Role from "../models/role.js";
 
 const RegisterService = {
   async createUser(userData) {

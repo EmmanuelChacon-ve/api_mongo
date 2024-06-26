@@ -6,16 +6,18 @@ const UserController = {
   async getAllUsers(req, res) {
     try {
       const users = await UserService.getAllUsers();
-      /* console.log(
-        `Usuarios obtenidos correctamente. Código de estado: ${res.statusCode}`
-      ); */
-      res.status(200).json(users); // Enviar respuesta con código 200 y usuarios
+      res.status(200).json({
+        success: true,
+        message: "Usuarios obtenidos correctamente",
+        data: users,
+      });
     } catch (err) {
       console.error("Error al obtener usuarios:", err);
-      console.log(
-        `Error al obtener usuarios. Código de estado: ${res.statusCode}`
-      );
-      res.status(500).json({ error: "Error al obtener usuarios" }); // Enviar respuesta con código 500 en caso de error
+      res.status(500).json({
+        success: false,
+        message: "Error al obtener usuarios",
+        error: { message: err.message || "Error desconocido", status: 500 },
+      });
     }
   },
 };

@@ -10,10 +10,24 @@ const LoginController = {
         password
       );
 
-      res.status(200).json({ user, token });
+      res.status(200).json({
+        success: true,
+        message: "Inicio de sesión exitoso",
+
+        data: { user, token },
+      });
     } catch (err) {
       console.error("Error al iniciar sesión:", err);
-      res.status(401).json({ error: "Credenciales inválidas" });
+
+      res.status(err.statusCode || 500).json({
+        success: false,
+        message: err.message || "Credenciales inválidas",
+
+        error: {
+          message: err.message || "Error desconocido",
+          status: err.statusCode || 500,
+        },
+      });
     }
   },
 };
