@@ -5,8 +5,7 @@ import connectDB from "./db/db.js"; // Importar la función de conexión a Mongo
 import path from "path";
 import { fileURLToPath } from "url";
 import morgan from "morgan"; // Middleware de registro de solicitudes HTTP
-import loadDynamicRoutes from "./app/routes/index.js"; // Importar la función para cargar las rutas dinámicas
-import { upload } from "./app/config/multerConfig.js"; // Importar la configuración de Multer
+import dynamicRoutes from "./app/routes/index.js"; // Importar la función para cargar las rutas dinámicas
 
 // Cargar variables de entorno desde .env
 dotenv.config();
@@ -27,10 +26,7 @@ connectDB();
 
 // Montar las rutas dinámicas en la aplicación
 const versionToUse = process.env.ROUTE_VERSION || "v1";
-app.use(`/${versionToUse}`, async (req, res, next) => {
-  const dynamicRoutes = await loadDynamicRoutes();
-  dynamicRoutes(req, res, next);
-});
+app.use(`/${versionToUse}`, dynamicRoutes);
 
 // Iniciar servidor
 app.listen(PORT, () => {
