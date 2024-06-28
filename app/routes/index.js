@@ -8,7 +8,7 @@ import * as path from "path";
 const router = express.Router();
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-(async () => {
+const loadDynamicRoutes = async () => {
   try {
     const versionToUse = process.env.ROUTE_VERSION || "v1"; // Definir la versión de rutas desde .env o por defecto
     const directoryPath = path.join(__dirname, versionToUse);
@@ -19,7 +19,9 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 
     if (!directoryExists) {
       console.log(`El directorio '${versionToUse}' no existe o está vacío.`);
-      return;
+      return (req, res, next) => {
+        next();
+      };
     }
 
     const files = await fs.readdir(directoryPath);
@@ -33,10 +35,13 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
       }
     }
 
-    /*     console.log(`Rutas dinámicas cargadas desde '${versionToUse}'.`); */
+    return router;
   } catch (err) {
     console.error("Error al cargar rutas dinámicas:", err);
+    return (req, res, next) => {
+      next();
+    };
   }
-})();
+};
 
-export default router;
+export default loadDynamicRoutes;

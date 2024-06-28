@@ -1,13 +1,11 @@
+// Ejemplo en el archivo de rutas (por ejemplo, register.js)
 import express from "express";
 import RegisterController from "../../controllers/register.js";
+import { upload } from "../../config/multerConfig.js";
 
-const registerRoutes = (upload) => {
-  const router = express.Router();
+const router = express.Router();
 
-  // Ruta para registrar un usuario con subida de imagen
-  router.post("/", upload.single("image"), RegisterController.registerUser);
+// Ruta para registrar un usuario con subida de imagen
+router.post("/", upload.single("image"), RegisterController.registerUser);
 
-  return router;
-};
-
-export default registerRoutes;
+export default router;
