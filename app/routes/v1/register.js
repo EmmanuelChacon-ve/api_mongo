@@ -1,10 +1,13 @@
-// routes/index.js
 import express from "express";
 import RegisterController from "../../controllers/register.js";
 
-const router = express.Router();
+const registerRoutes = (upload) => {
+  const router = express.Router();
 
-// Ruta para obtener todos los usuarios
-router.post("/", RegisterController.registerUser);
+  // Ruta para registrar un usuario con subida de imagen
+  router.post("/", upload.single("image"), RegisterController.registerUser);
 
-export default router;
+  return router;
+};
+
+export default registerRoutes;
