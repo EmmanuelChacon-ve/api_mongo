@@ -24,9 +24,10 @@ const LoginService = {
     }
 
     // Si no estamos manejando tokens activos, omitimos esta parte
-
+    //obteninedo el name del rol para saber que permisos posee
+    const {role_name : rol} = user.roles.at(0);
     const token = jwt.sign(
-      { userId: user._id, email: user.email },
+      { userId: user._id, email: user.email, rol: rol.toLowerCase() },
       process.env.JWT_SECRET,
       { expiresIn: "1h" }
     );

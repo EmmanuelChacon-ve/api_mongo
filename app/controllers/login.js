@@ -5,17 +5,22 @@ const LoginController = {
   async loginUser(req, res) {
     try {
       const { email, password } = req.body;
-      const { user, token } = await LoginService.authenticateUser(
+      const { user : dataToReturn, token } = await LoginService.authenticateUser(
         email,
         password
       );
-
-      res.status(200).json({
-        success: true,
-        message: "Inicio de sesión exitoso",
-
-        data: { user, token },
-      });
+      
+      res.cookie('access_token',token,
+        {
+          httpOnly: true,//la cookie solo se puede acceder en el servidor
+          secure: true,   //la cookie solo se puede acceder en https
+          sameSize: 'strict' //la cookie solo se puede acceder en el mismo dominio
+        }).status(201).json(
+          {
+            success: true,
+            message: 'inicio de session exitoso',
+            data: dataToReturn
+          })
     } catch (err) {
       console.error("Error al iniciar sesión:", err);
 

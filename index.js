@@ -6,6 +6,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import morgan from "morgan"; // Middleware de registro de solicitudes HTTP
 import dynamicRoutes from "./app/routes/index.js"; // Importar la función para cargar las rutas dinámicas
+import cookieParser from "cookie-parser";
 
 // Cargar variables de entorno desde .env
 dotenv.config();
@@ -17,6 +18,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 // Middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 // Middleware de registro de solicitudes HTTP
 app.use(morgan("dev"));

@@ -1,8 +1,18 @@
 import UpdateService from "../services/update.js";
+import {hasPermission} from "../helpers/permissionHandler.js"
 
 const UpdateController = {
   async updateUser(req, res) {
-    const userId = req.params.userId; // Suponiendo que el userId está en los parámetros de la URL
+    const {userId,rol} = req.userInformation;
+    if(!hasPermission('Update',rol))
+      {
+        return res.status(400).json(
+          {
+            success: false,
+            message: 'El usuario no posee permisos para esta accion',
+            data: undefined
+          })
+      }
     const { full_name, numero } = req.body;
 
     try {
