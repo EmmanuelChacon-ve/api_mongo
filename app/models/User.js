@@ -3,7 +3,6 @@ import mongoose from "mongoose";
 
 const roleSchema = new mongoose.Schema({
   role_id: { type: mongoose.Schema.Types.ObjectId, ref: "Role" },
-  role_name: { type: String },
   status: { type: String },
 });
 

@@ -9,7 +9,7 @@ let activeTokens = new Map();
 
 const LoginService = {
   async authenticateUser(email, password) {
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email }).populate("roles.role_id");
 
     if (!user) {
       const error = new Error("Usuario no encontrado");
@@ -23,9 +23,21 @@ const LoginService = {
       throw error;
     }
 
-    // Si no estamos manejando tokens activos, omitimos esta parte
-    //obteninedo el name del rol para saber que permisos posee
-    const {role_name : rol} = user.roles.at(0);
+    // Log para verificar los roles del usuario
+    console.log("Roles del usuario:", user.roles);
+
+    if (
+      !user.roles ||
+      user.roles.length === 0 ||
+      !user.roles[0].role_id ||
+      !user.roles[0].role_id.name_rol
+    ) {
+      const error = new Error("Rol del usuario no encontrado");
+      error.statusCode = 500;
+      throw error;
+    }
+
+    const rol = user.roles[0].role_id.name_rol;
     const token = jwt.sign(
       { userId: user._id, email: user.email, rol: rol.toLowerCase() },
       process.env.JWT_SECRET,
@@ -35,12 +47,10 @@ const LoginService = {
     return { user, token };
   },
 
-  // Método para cerrar sesión (eliminar el token activo)
   logoutUser(userId) {
     activeTokens.delete(userId);
   },
 
-  // Método para verificar si un token está activo (opcional)
   isTokenActive(userId) {
     return activeTokens.has(userId);
   },
