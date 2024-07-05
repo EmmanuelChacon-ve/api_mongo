@@ -1,5 +1,7 @@
 import UpdateService from "../services/update.js";
 import {hasPermission} from "../helpers/permissionHandler.js"
+import { token } from "morgan";
+import {basename } from "node:path"
 
 const UpdateController = {
   async updateUser(req, res) {
@@ -20,12 +22,14 @@ const UpdateController = {
         full_name,
         numero,
       });
-
+      updatedUser.image=basename(updatedUser.image)
       res.status(200).json({
         success: true,
         message: "Usuario actualizado exitosamente",
         data: updatedUser,
+        token:req.body.token
       });
+      console.log(req.token)
     } catch (err) {
       console.error("Error al actualizar usuario:", err);
 

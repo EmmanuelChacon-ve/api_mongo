@@ -25,7 +25,7 @@ app.use(morgan("dev"));
 
 // Conectar a MongoDB
 connectDB();
-
+app.use('/static',express.static(path.join(__dirname,'uploads')))
 // Montar las rutas dinámicas en la aplicación
 const versionToUse = process.env.ROUTE_VERSION || "v1";
 app.use(`/${versionToUse}`, dynamicRoutes);

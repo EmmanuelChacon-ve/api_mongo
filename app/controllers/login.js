@@ -1,15 +1,17 @@
 // controllers/login.js
 import LoginService from "../services/login.js";
+import {dirname,join} from "node:path"
+import { basename } from "node:path";
 
 const LoginController = {
   async loginUser(req, res) {
     try {
       const { email, password } = req.body;
-      const { user : dataToReturn, token } = await LoginService.authenticateUser(
+      let { user : dataToReturn, token } = await LoginService.authenticateUser(
         email,
         password
       );
-      
+      dataToReturn.image = basename(dataToReturn.image);
       res.cookie('access_token',token,
         {
           httpOnly: true,//la cookie solo se puede acceder en el servidor
@@ -19,7 +21,8 @@ const LoginController = {
           {
             success: true,
             message: 'inicio de session exitoso',
-            data: dataToReturn
+            data: dataToReturn,
+            token:token
           })
     } catch (err) {
       console.error("Error al iniciar sesión:", err);
@@ -35,6 +38,4 @@ const LoginController = {
       });
     }
   },
-};
-
-export default LoginController;
+};export default LoginController;

@@ -17,7 +17,7 @@ const UpdateService = {
         error.statusCode = 404;
         throw error;
       }
-
+      console.log("aquii"+updatedUser)
       return updatedUser;
     } catch (err) {
       throw err;
