@@ -1,7 +1,6 @@
 import jwt from "jsonwebtoken";
 const verifyJwtToken = (req,res,next) => 
     {
-        console.log(req.body)
         const {token} = req.body
         try {
 
